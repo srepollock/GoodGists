@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="MaterialTheme">
+    <style name="AppTheme" parent="Platform.AppCompat.Light">
     </style>
 
     <style name="MaterialTheme" parent="Theme.AppCompat" />

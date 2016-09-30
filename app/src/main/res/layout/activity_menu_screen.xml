@@ -29,7 +29,8 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:text="@string/menu_search"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:onClick="searchScreen"/>
         </TableRow>
 
         <TableRow
