@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">GoodGists</string>
+
+    <!--Menu Items-->
+    <string name="menu_search">Search</string>
+    <string name="menu_gist">My Gists</string>
+    <string name="menu_star">Starred</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_login">Login</string>
+    <!--End Menu Items-->
+
+    <!--Search Strings-->
+    <string name="search_title">Search Gists</string>
+    <string name="search_hint_gist">Gist name</string>
+    <string name="search_hint_language">Language type</string>
+    <string name="search_hint_user">Author</string>
+    <!--End Search Strings-->
+
+    <!--Font Awesome-->
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_file_text_o">&#xf0f6;</string>
+    <string name="fa_star">&#xf006;</string>
+    <string name="fa_user">&#xf007;</string>
+    <string name="fa_sign_in">&#xf090;</string>
+    <string name="fa_sign_out">&#xf08b;</string>
+    <string name="fa_github">&#xf09b;</string>
+    <string name="fa_angle_left">&#xf104;</string>
+    <string name="fa_angle_right">&#xf105;</string>
+    <!--End FontAwesome-->
+
+    <string name="searching">Searching...</string>
+    <string name="cancel">Cancel</string>
+</resources>
