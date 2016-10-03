@@ -30,7 +30,7 @@ public class UITest {
     @Test
     public void menuScreen_MyGistsClick() {
         onView(withId(R.id.menuGistButton)).perform(click());
-        //onView(withId(R.id.gistScreenDescription)).check(matches(withText("My Gists")));
+        onView(withId(R.id.gistScreenDiscription)).check(matches(withText("My Gists")));
     }
 
     @Test

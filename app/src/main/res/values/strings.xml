@@ -17,6 +17,10 @@
     <string name="search_hint_user">Author</string>
     <!--End Search Strings-->
 
+    <!--My Gists Strings-->
+    <string name="my_gists">My Gists</string>
+    <!--End My Gists-->
+
     <!--Font Awesome-->
     <string name="fa_search">&#xf002;</string>
     <string name="fa_file_text_o">&#xf0f6;</string>
@@ -31,4 +35,7 @@
 
     <string name="searching">Searching...</string>
     <string name="cancel">Cancel</string>
+
+    <string name="unstarred">Unstarred</string>
+    <string name="starred">Starred</string>
 </resources>

@@ -45,7 +45,8 @@
                 android:id="@+id/menuGistButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:onClick="myGistsScreen" />
         </TableRow>
 
         <TableRow
