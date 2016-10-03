@@ -33,4 +33,9 @@ public class MenuScreen extends AppCompatActivity {
         Intent detailsIntent = new Intent(this, AccountScreen.class);
         startActivity(detailsIntent);
     }
+
+    public void logoutScreen(View view) {
+        Intent detailsIntent = new Intent(this, LogoutScreen.class);
+        startActivity(detailsIntent);
+    }
 }
