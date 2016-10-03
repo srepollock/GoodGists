@@ -38,4 +38,9 @@ public class MenuScreen extends AppCompatActivity {
         Intent detailsIntent = new Intent(this, LogoutScreen.class);
         startActivity(detailsIntent);
     }
+
+    public void loginScreen(View view) {
+        Intent detailsIntent = new Intent(this, LoginScreen.class);
+        startActivity(detailsIntent);
+    }
 }

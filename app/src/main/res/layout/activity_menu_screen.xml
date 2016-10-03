@@ -109,7 +109,8 @@
                 android:id="@+id/menuLoginButton"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:onClick="loginScreen" />
         </TableRow>
 
     </TableLayout>
