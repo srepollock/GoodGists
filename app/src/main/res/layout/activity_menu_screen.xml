@@ -61,7 +61,8 @@
                 android:id="@+id/menuStarButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:onClick="starredScreen" />
         </TableRow>
 
         <TableRow

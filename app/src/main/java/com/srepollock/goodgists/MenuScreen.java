@@ -23,4 +23,9 @@ public class MenuScreen extends AppCompatActivity {
         Intent detailsIntent = new Intent(this, MyGists.class);
         startActivity(detailsIntent);
     }
+
+    public void starredScreen(View view) {
+        Intent detailsIntent = new Intent(this, StarredScreen.class);
+        startActivity(detailsIntent);
+    }
 }
