@@ -42,6 +42,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.srepollock.goodgists.MenuScreen" />
         </activity>
+        <activity android:name=".AccountScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.srepollock.goodgists.MenuScreen" />
+        </activity>
     </application>
 
 </manifest>

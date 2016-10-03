@@ -28,4 +28,9 @@ public class MenuScreen extends AppCompatActivity {
         Intent detailsIntent = new Intent(this, StarredScreen.class);
         startActivity(detailsIntent);
     }
+
+    public void accountScreen(View view) {
+        Intent detailsIntent = new Intent(this, AccountScreen.class);
+        startActivity(detailsIntent);
+    }
 }
