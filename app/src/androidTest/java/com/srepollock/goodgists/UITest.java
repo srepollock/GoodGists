@@ -3,7 +3,9 @@ package com.srepollock.goodgists;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.rule.ActivityTestRule;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.hamcrest.Matcher;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
+import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -45,13 +48,16 @@ public class UITest {
         onView(withId(R.id.activity_menu_screen)).check(matches(isDisplayed()));
     }
 
-//    @Test
-//    public void searchScreen_Input() {
-//        onView(withId(R.id.menuSearchButton))
-//                .perform(click());
-//        onView(withId(R.id.gist_search))
-//                .perform(click(), setText("Test"), click());
-//    }
+    @Test
+    public void searchScreen_Input() {
+        onView(withId(R.id.menuSearchButton))
+                .perform(click());
+        onView(withId(R.id.gist_search))
+                .perform(click());
+        onView(isAssignableFrom(EditText.class))
+                .perform(setText("Test"),
+                        pressKey(KeyEvent.KEYCODE_ENTER));
+    }
 
     @Test
     public void menuScreen_MyGistsClick() {
