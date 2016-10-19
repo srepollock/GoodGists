@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.hamcrest.Matcher;
+
 import org.junit.Rule;
 import org.junit.Test;
 
