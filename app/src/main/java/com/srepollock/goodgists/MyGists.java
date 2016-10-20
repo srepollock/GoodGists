@@ -31,11 +31,11 @@ public class MyGists extends AppCompatActivity {
         if (starred) {
             starred = false;
             pMenu.getItem(0).setIcon(getResources()
-                    .getDrawable(R.drawable.ic_star_white_24dp));
+                    .getDrawable(R.drawable.ic_star_white_24dp, null));
         } else {
             starred = true;
             pMenu.getItem(0).setIcon(getResources()
-                    .getDrawable(R.drawable.ic_star_border_white_24dp));
+                    .getDrawable(R.drawable.ic_star_border_white_24dp, null));
         }
     }
 }

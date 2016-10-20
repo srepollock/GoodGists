@@ -33,9 +33,19 @@
     <string name="fa_angle_right">&#xf105;</string>
     <!--End FontAwesome-->
 
+    <!--Dialog-->
     <string name="searching">Searching...</string>
     <string name="cancel">Cancel</string>
+    <string name="invalidUserEmail">Invalid username or email.
+        Please enter a correct username or email</string>
+    <string name="close">Close</string>
+    <!--End Dialog-->
 
     <string name="unstarred">Unstarred</string>
     <string name="starred">Starred</string>
+
+    <!--Login-->
+    <string name="username">Username or Email</string>
+    <string name="password">Password</string>
+    <!--End Login-->
 </resources>
