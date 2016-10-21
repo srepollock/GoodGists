@@ -36,8 +36,17 @@
     <!--Dialog-->
     <string name="searching">Searching...</string>
     <string name="cancel">Cancel</string>
-    <string name="invalidUserEmail">Invalid username or email.
+    <string name="noUser">No username or email.
         Please enter a correct username or email</string>
+    <string name="noPassword">No password.
+        Please enter your user password.</string>
+    <string name="cannotConnect">Cannot connect to service. Please try again,
+        or if the problem persists,
+        create an issue at https://github.com/GoodGoodies/goodGists.</string>
+    <string name="didNotCreateOAuthToken">You chose not to create an OAuth Token. You will have
+        to sign into the service again after closing the application.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="close">Close</string>
     <!--End Dialog-->
 
