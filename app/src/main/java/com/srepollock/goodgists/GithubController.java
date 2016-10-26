@@ -67,9 +67,6 @@ public class GitHubController implements Parcelable {
         } catch (IOException ioe) {
             ioe.printStackTrace();
             return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
         return true;
     }

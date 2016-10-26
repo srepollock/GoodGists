@@ -24,16 +24,24 @@ public class LoginScreen extends AppCompatActivity {
     public void loginToGitHub(View view) {
         String username = editTextAsString((EditText) findViewById(R.id.usernameLogin));
         String password = editTextAsString((EditText) findViewById(R.id.password));
-        if(!checkUser(username) && !checkPassword(password)) {
+//        if(!checkUser(username) && !checkPassword(password)) {
+//            boolean connected = gitHubController.connect(username, password);
+//            if (connected) {
+//                createOAuthTokenDialog();
+//            } else if (!connected){
+//                cannotConnectDialog();
+//            }
+//        } else {
+//            // Display dialog "Invalid username or email"
+//            noUserDialog();
+//        }
+        // Check username && password
+        if (checkUser(username) && checkPassword(password)) {
+            // Attempt to connect
             boolean connected = gitHubController.connect(username, password);
             if (connected) {
-                createOAuthTokenDialog();
-            } else if (!connected){
-                cannotConnectDialog();
+               createOAuthTokenDialog();
             }
-        } else {
-            // Display dialog "Invalid username or email"
-            noUserDialog();
         }
     }
 
@@ -42,11 +50,19 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     private boolean checkUser(String u) {
-        return u.matches("");
+        if (u.matches("")) {
+            noUserDialog();
+            return false;
+        }
+        return true;
     }
 
     private boolean checkPassword(String p) {
-        return p.matches("");
+        if(p.matches("")) {
+            noPasswordDialog();
+            return false;
+        }
+        return true;
     }
 
     private void noUserDialog() {
@@ -84,6 +100,7 @@ public class LoginScreen extends AppCompatActivity {
         builder.setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+                finish();
             }
         });
         // 3. Get the AlertDialog from create()
@@ -113,14 +130,16 @@ public class LoginScreen extends AppCompatActivity {
               switch (which) {
                   case DialogInterface.BUTTON_POSITIVE:
                       OAuthResult = true;
+                      finish();
                       break;
                   case DialogInterface.BUTTON_NEGATIVE:
                       OAuthResult = false;
+                      didNotCreateOAuthTokenDialog();
                       break;
               }
           }
         };
-        builder.setMessage(R.string.cannotConnect)
+        builder.setMessage(R.string.createOAuthToken)
                 .setPositiveButton(R.string.yes, dialogClickListener)
                 .setNegativeButton(R.string.no, dialogClickListener);
         // 3. Get the AlertDialog from create()
