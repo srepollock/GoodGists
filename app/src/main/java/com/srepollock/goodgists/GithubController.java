@@ -5,10 +5,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.kohsuke.github.GHAuthorization;
+import org.kohsuke.github.GHGist;
+import org.kohsuke.github.GHGistFile;
+import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GitHub;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,32 +76,53 @@ public class GitHubController implements Parcelable {
         return true;
     }
 
-    public void getOAuthKeyFile(Context appContext, String filename) {
-
-    }
-
-    public void setOAuthKeyFile(Context appContext, String filename) {
-        File f = new File(appContext.getFilesDir(), filename);
-        FileOutputStream fileOutputStream;
+    public String getOAuthKey(Context appContext, String fileName) {
+        String OAuth = null;
+        BufferedReader reader;
         try {
-            fileOutputStream = appContext.openFileOutput(filename, Context.MODE_PRIVATE);
-//            fileOutputStream.write();
-//            fileOutputStream.close();
+            String filepathname = appContext.getFilesDir().getPath() + File.separator + fileName;
+            reader = new BufferedReader(
+                    new FileReader(filepathname));
+            OAuth = "";
+            String line;
+            while ((line = reader.readLine()) != null) { OAuth += line; }
+            reader.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        return OAuth;
+    }
+
+    // TODO Fix permissions
+    public File setOAuthKeyFile(Context appContext, String fileName) throws IOException {
+        FileOutputStream outputStream;
+        File f = new File(appContext.getFilesDir(), fileName);
+        outputStream = appContext.openFileOutput(fileName, Context.MODE_APPEND);
+        outputStream.write(createOAuthKey(appContext).getBytes());
+        outputStream.close();
+        return f;
     }
 
     private String createOAuthKey(Context appContext) {
-        String OAuthKey;
-        GHAuthorization ghAuthorization;
+        String OAuthToken = null;
         try {
-            ghAuthorization = gitHub.createToken(scope, appContext.getString(R.string.app_name), null);
+            OAuthToken = gitHub.createToken(scope, appContext.getString(R.string.app_name), null).getToken();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        return OAuthToken;
+    }
 
-        return null;
+    public GHMyself getMyself() throws IOException {
+        return gitHub.getMyself();
+    }
+
+    public GHGist getGist(String gistID) throws IOException {
+        return gitHub.getGist(gistID);
+    }
+
+    public GHGistFile getGistFile(GHGist gist, String fileName) {
+        return gist.getFile(fileName);
     }
 }
 
