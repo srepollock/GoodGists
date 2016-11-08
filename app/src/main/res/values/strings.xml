@@ -59,4 +59,8 @@
     <string name="username">Username or Email</string>
     <string name="password">Password</string>
     <!--End Login-->
+
+    <!--File-->
+    <string name="oauthkeyfile">oauthkey</string>
+    <!--End File-->
 </resources>

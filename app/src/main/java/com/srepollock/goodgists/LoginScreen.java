@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.IOException;
+
 public class LoginScreen extends AppCompatActivity {
 
     // TODO Temporary, remove this for future use and use parcelable
-    GitHubController gitHubController = new GitHubController();
+    GitHubController ghc;
 
     private boolean OAuthResult = false;
 
@@ -18,27 +20,21 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-        // TODO Retrieve parcelable
+        // TODO Retrieve parcelable look at http://stackoverflow.com/questions/1124548/how-to-pass-the-values-from-one-activity-to-previous-activity
+        Bundle b = this.getIntent().getExtras();
+        if (b.get("ghc") != null)
+            ghc = (GitHubController)b.get("ghc");
+        else
+            ghc = new GitHubController();
     }
 
     public void loginToGitHub(View view) {
         String username = editTextAsString((EditText) findViewById(R.id.usernameLogin));
         String password = editTextAsString((EditText) findViewById(R.id.password));
-//        if(!checkUser(username) && !checkPassword(password)) {
-//            boolean connected = gitHubController.connect(username, password);
-//            if (connected) {
-//                createOAuthTokenDialog();
-//            } else if (!connected){
-//                cannotConnectDialog();
-//            }
-//        } else {
-//            // Display dialog "Invalid username or email"
-//            noUserDialog();
-//        }
         // Check username && password
         if (checkUser(username) && checkPassword(password)) {
             // Attempt to connect
-            boolean connected = gitHubController.connect(username, password);
+            boolean connected = ghc.connect(username, password);
             if (connected) {
                createOAuthTokenDialog();
             }
@@ -130,6 +126,12 @@ public class LoginScreen extends AppCompatActivity {
               switch (which) {
                   case DialogInterface.BUTTON_POSITIVE:
                       OAuthResult = true;
+                      try {
+                          ghc.setOAuthKeyFile(getApplicationContext(),
+                                  getString(R.string.oauthkeyfile));
+                      } catch (IOException ioe) {
+                          ioe.printStackTrace();
+                      }
                       finish();
                       break;
                   case DialogInterface.BUTTON_NEGATIVE:

@@ -65,7 +65,7 @@ public class GitHubController implements Parcelable {
     public GitHubController() {
 
     }
-
+    // TODO Connect methods need to be done in an async task 
     public boolean connect(String login, String password) {
         try {
             gitHub = GitHub.connectUsingPassword(login, password);
@@ -76,7 +76,17 @@ public class GitHubController implements Parcelable {
         return true;
     }
 
-    public String getOAuthKey(Context appContext, String fileName) {
+    public boolean connect(String oauth) {
+        try {
+            gitHub = GitHub.connectUsingOAuth(oauth);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static String getOAuthKey(Context appContext, String fileName) {
         String OAuth = null;
         BufferedReader reader;
         try {
