@@ -1,8 +1,10 @@
 package com.srepollock.goodgists;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Pair;
 
 import org.kohsuke.github.GHAuthorization;
 import org.kohsuke.github.GHGist;
@@ -17,13 +19,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Spencer on 2016-10-19.
  */
 
 public class GitHubController implements Parcelable {
-    private int mData;
     private static final ArrayList<String> scope =
             new ArrayList<>(Arrays.asList(
                     GHAuthorization.GIST,
@@ -42,7 +44,7 @@ public class GitHubController implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeInt(mData);
+        // out.write(/*data*/);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -59,31 +61,82 @@ public class GitHubController implements Parcelable {
 
     // example constructor that takes a Parcel and gives you an object populated with it's values
     private GitHubController(Parcel in) {
-        mData = in.readInt();
+        /*private data*/// = in.read();
     }
 
     public GitHubController() {
 
     }
-    // TODO Connect methods need to be done in an async task 
+
+    private class ConnectToGitHubPass extends AsyncTask<Pair<String, String>, Void, Boolean> {
+        protected Boolean doInBackground(Pair<String, String>... data) {
+            try {
+                gitHub = GitHub.connectUsingPassword(data[0].first, data[0].second);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+    }
+
+    private class ConnectToGitHubOAuth extends AsyncTask<String, Void, Boolean> {
+        protected Boolean doInBackground(String... oauth) {
+            try {
+                gitHub = GitHub.connectUsingOAuth(oauth[0]);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+    }
+
+    private class CreateOAuthKey extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... app_name) {
+            String OAuthToken = null;
+            try {
+                OAuthToken = gitHub.createToken(scope, app_name[0], null).getToken();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            return OAuthToken;
+        }
+    }
+
+    private class GetMyself extends AsyncTask<Void, Void, GHMyself> {
+        protected GHMyself doInBackground(Void... v) {
+            try {
+                return gitHub.getMyself();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     public boolean connect(String login, String password) {
         try {
-            gitHub = GitHub.connectUsingPassword(login, password);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            return new ConnectToGitHubPass().execute(new Pair<>(login, password)).get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return false;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public boolean connect(String oauth) {
         try {
-            gitHub = GitHub.connectUsingOAuth(oauth);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            return new ConnectToGitHubOAuth().execute(oauth).get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return false;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public static String getOAuthKey(Context appContext, String fileName) {
@@ -103,33 +156,44 @@ public class GitHubController implements Parcelable {
         return OAuth;
     }
 
-    // TODO Fix permissions
-    public File setOAuthKeyFile(Context appContext, String fileName) throws IOException {
+    public File setOAuthKeyFile(Context appContext, String fileName) {
         FileOutputStream outputStream;
         File f = new File(appContext.getFilesDir(), fileName);
-        outputStream = appContext.openFileOutput(fileName, Context.MODE_APPEND);
-        outputStream.write(createOAuthKey(appContext).getBytes());
-        outputStream.close();
+        try {
+            outputStream = appContext.openFileOutput(fileName, Context.MODE_APPEND);
+            outputStream.write(createOAuthKey(appContext).getBytes());
+            outputStream.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
         return f;
     }
 
     private String createOAuthKey(Context appContext) {
-        String OAuthToken = null;
         try {
-            OAuthToken = gitHub.createToken(scope, appContext.getString(R.string.app_name), null).getToken();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            return new CreateOAuthKey().execute(appContext.getString(R.string.app_name)).get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return null;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+            return null;
         }
-        return OAuthToken;
     }
 
     public GHMyself getMyself() throws IOException {
-        return gitHub.getMyself();
+        try {
+            return new GetMyself().execute().get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return null;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+            return null;
+        }
     }
 
-    public GHGist getGist(String gistID) throws IOException {
-        return gitHub.getGist(gistID);
-    }
+    public GHGist getGist(String gistID) throws IOException { return gitHub.getGist(gistID); }
 
     public GHGistFile getGistFile(GHGist gist, String fileName) {
         return gist.getFile(fileName);

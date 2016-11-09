@@ -126,12 +126,7 @@ public class LoginScreen extends AppCompatActivity {
               switch (which) {
                   case DialogInterface.BUTTON_POSITIVE:
                       OAuthResult = true;
-                      try {
-                          ghc.setOAuthKeyFile(getApplicationContext(),
-                                  getString(R.string.oauthkeyfile));
-                      } catch (IOException ioe) {
-                          ioe.printStackTrace();
-                      }
+                      ghc.setOAuthKeyFile(getApplicationContext(), getString(R.string.oauthkeyfile));
                       finish();
                       break;
                   case DialogInterface.BUTTON_NEGATIVE:

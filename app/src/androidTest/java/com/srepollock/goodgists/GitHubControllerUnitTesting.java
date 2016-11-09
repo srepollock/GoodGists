@@ -20,7 +20,7 @@ public class GitHubControllerUnitTesting {
      */
     private boolean signin() {
         ghc = new GitHubController();
-        return ghc.connect("srsavage", ""); // TODO Enter password for testing
+        return ghc.connect("srsavage", "$ecure5ystem"); // TODO Enter password for testing
     }
     @Test
     public void githubConnection() throws Exception {
