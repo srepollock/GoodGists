@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import java.io.IOException;
+import android.widget.Toast;
 
 public class MenuScreen extends AppCompatActivity {
 
@@ -15,18 +14,13 @@ public class MenuScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_screen);
-        String oauthkey =
-                GitHubController.getOAuthKey(getApplicationContext(),
-                        getString(R.string.oauthkeyfile));
-        ghc = new GitHubController();
-        if (oauthkey != null){
-            if(ghc.connect(oauthkey)) {
-                loggedInMenu();
-            }
-            loggedOutMenu();
-        } else {
-            loggedOutMenu();
-        }
+        checkLoggedIn();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        checkLoggedInResume();
     }
 
     public void searchScreen(View view) {
@@ -77,12 +71,60 @@ public class MenuScreen extends AppCompatActivity {
         detailsIntent.putExtras(b);
         startActivity(detailsIntent);
     }
-    // TODO Hide login
-    private void loggedInMenu() {
 
+    private void checkLoggedIn() {
+        String oauthkey = GitHubController.getOAuthKey(getApplicationContext(),
+                        getString(R.string.oauthkeyfile));
+        ghc = new GitHubController();
+        if (oauthkey != null && ghc.connect(oauthkey)){
+            loggedInMenuToast();
+            loggedInMenuVisibility();
+        } else {
+            loggedOutMenuToast();
+            loggedOutMenuVisibility();
+            ghc = new GitHubController();
+        }
     }
-    // TODO Visible only logged in stuff
-    private void loggedOutMenu() {
 
+    private void checkLoggedInResume() {
+        String oauthkey = GitHubController.getOAuthKey(getApplicationContext(),
+                getString(R.string.oauthkeyfile));
+        ghc = new GitHubController();
+        if (oauthkey != null && ghc.connect(oauthkey)){
+            loggedInMenuVisibility();
+        } else {
+            loggedOutMenuVisibility();
+            ghc = new GitHubController();
+        }
+    }
+
+    private void loggedInMenuToast() {
+        Toast.makeText(getApplicationContext(),
+                R.string.logged_in_toast,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    // TODO Hide login
+    private void loggedInMenuVisibility() {
+        findViewById(R.id.menuLoginButton).setVisibility(View.GONE);
+        findViewById(R.id.menuGistRow).setVisibility(View.VISIBLE);
+        findViewById(R.id.menuStarRow).setVisibility(View.VISIBLE);
+        findViewById(R.id.menuAccountRow).setVisibility(View.VISIBLE);
+        findViewById(R.id.menuLogoutRow).setVisibility(View.VISIBLE);
+    }
+
+    private void loggedOutMenuToast() {
+        Toast.makeText(getApplicationContext(),
+                R.string.logged_out_toast,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    // TODO Visible only logged in stuff
+    private void loggedOutMenuVisibility() {
+        findViewById(R.id.menuGistRow).setVisibility(View.GONE);
+        findViewById(R.id.menuStarRow).setVisibility(View.GONE);
+        findViewById(R.id.menuAccountRow).setVisibility(View.GONE);
+        findViewById(R.id.menuLogoutRow).setVisibility(View.GONE);
+        findViewById(R.id.menuLoginButton).setVisibility(View.VISIBLE);
     }
 }

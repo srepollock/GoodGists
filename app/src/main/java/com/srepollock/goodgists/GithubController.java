@@ -92,15 +92,33 @@ public class GitHubController implements Parcelable {
         }
     }
 
-    private class CreateOAuthKey extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... app_name) {
+    private class GetOAuthKey extends AsyncTask<Context, Void, String> {
+        protected String doInBackground(Context... c) {
             String OAuthToken = null;
             try {
-                OAuthToken = gitHub.createToken(scope, app_name[0], null).getToken();
+                OAuthToken = gitHub.createOrGetAuth(
+                        c[0].getString(R.string.clientid),
+                        c[0].getString(R.string.clientsecret),
+                        scope,
+                        c[0].getString(R.string.app_name),
+                        null
+                ).getToken();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
             return OAuthToken;
+        }
+    }
+
+    private class DeleteAuth extends AsyncTask<GHMyself, Void, Boolean> {
+        protected Boolean doInBackground(GHMyself... ghm) {
+            try {
+                gitHub.deleteAuth(ghm[0].getId());
+                return true;
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            return false;
         }
     }
 
@@ -114,6 +132,47 @@ public class GitHubController implements Parcelable {
             }
         }
     }
+
+    private class GetFollowers extends AsyncTask<Void, Void, Integer> {
+        protected Integer doInBackground(Void... v) {
+            try {
+                return gitHub.getMyself().getFollowersCount();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    private class GetFollowing extends AsyncTask<Void, Void, Integer> {
+        protected Integer doInBackground(Void... v) {
+            try {
+                return gitHub.getMyself().getFollowingCount();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    private class GetGist extends AsyncTask<String, Void, GHGist> {
+        protected GHGist doInBackground(String... gistID) {
+            try {
+                return gitHub.getGist(gistID[0]);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    private class GetGistFile extends AsyncTask<Pair<GHGist, String>, Void, GHGistFile> {
+        protected GHGistFile doInBackground(Pair<GHGist, String>... data) {
+            return data[0].first.getFile(data[0].second);
+        }
+    }
+
+    // TODO Search/Get Search results
 
     public boolean connect(String login, String password) {
         try {
@@ -171,7 +230,7 @@ public class GitHubController implements Parcelable {
 
     private String createOAuthKey(Context appContext) {
         try {
-            return new CreateOAuthKey().execute(appContext.getString(R.string.app_name)).get();
+            return new GetOAuthKey().execute(appContext).get();
         } catch (InterruptedException ie) {
             ie.printStackTrace();
             return null;
@@ -179,6 +238,18 @@ public class GitHubController implements Parcelable {
             ee.printStackTrace();
             return null;
         }
+    }
+
+    public boolean deleteOAuth() {
+        try {
+            GHMyself ghm = new GetMyself().execute().get();
+            return new DeleteAuth().execute(ghm).get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+        }
+        return true;
     }
 
     public GHMyself getMyself() throws IOException {
@@ -193,10 +264,52 @@ public class GitHubController implements Parcelable {
         }
     }
 
-    public GHGist getGist(String gistID) throws IOException { return gitHub.getGist(gistID); }
+    public GHGist getGist(String gistID) throws IOException {
+        try {
+            return new GetGist().execute(gistID).get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return null;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+            return null;
+        }
+    }
 
     public GHGistFile getGistFile(GHGist gist, String fileName) {
-        return gist.getFile(fileName);
+        try {
+            return new GetGistFile().execute(new Pair<>(gist, fileName)).get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return null;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+            return null;
+        }
+    }
+
+    public int getFollowerCount() {
+        try {
+            return new GetFollowers().execute().get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return 0;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int getFollowingCount() {
+        try {
+            return new GetFollowing().execute().get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            return 0;
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+            return 0;
+        }
     }
 }
 

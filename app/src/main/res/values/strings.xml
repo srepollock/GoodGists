@@ -1,20 +1,24 @@
 <resources>
     <string name="app_name">GoodGists</string>
 
-    <!--Menu Items-->
+    <!--Main Menu Items-->
     <string name="menu_search">Search</string>
     <string name="menu_gist">My Gists</string>
     <string name="menu_star">Starred</string>
     <string name="menu_account">Account</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_login">Login</string>
-    <!--End Menu Items-->
+    <!--End Main Menu Items-->
 
     <!--Search Strings-->
     <string name="search_title">Search Gists</string>
     <string name="search_hint_gist">Gist name</string>
     <string name="search_hint_language">Language type</string>
     <string name="search_hint_user">Author</string>
+    <string name="options">Options</string>
+    <string name="search_user">User</string>
+    <string name="search_gist">Gist</string>
+    <string name="search_language">Language</string>
     <!--End Search Strings-->
 
     <!--My Gists Strings-->
@@ -43,7 +47,8 @@
     <string name="cannotConnect">Cannot connect to service. Please try again,
         or if the problem persists,
         create an issue at https://github.com/GoodGoodies/goodGists.</string>
-    <string name="createOAuthToken">Do you want to create an OAuth token that has access to...
+    <string name="createOAuthToken">Do you want to create an OAuth token that has access to:
+        \n- Gists\n- Notifications\n- Public Repositories\n- Users\n- User Followers
     </string>
     <string name="didNotCreateOAuthToken">You chose not to create an OAuth Token. You will have
         to sign into the service again after closing the application.</string>
@@ -60,7 +65,16 @@
     <string name="password">Password</string>
     <!--End Login-->
 
+    <!--Logout-->
+    <string name="logout_explained">You need to enter your password to confirm deletion of your OAuth token</string>
+    <!--End Logout-->
+
     <!--File-->
     <string name="oauthkeyfile">oauthkey</string>
     <!--End File-->
+
+    <!--Toasts-->
+    <string name="logged_in_toast">You are logged into GitHub with your OAuth Token</string>
+    <string name="logged_out_toast">You are logged out</string>
+    <!--End Toasts-->
 </resources>
